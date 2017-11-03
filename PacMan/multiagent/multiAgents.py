@@ -43,6 +43,7 @@ class ReflexAgent(Agent):
 
         # Choose one of the best actions
         scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
+        print "-----------------------------Scores: {0}".format(scores)
         bestScore = max(scores)
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
         chosenIndex = random.choice(bestIndices) # Pick randomly among the best
@@ -58,7 +59,7 @@ class ReflexAgent(Agent):
         The evaluation function takes in the current and proposed successor
         GameStates (pacman.py) and returns a number, where higher numbers are better.
 
-        The code below extracts some useful information from the state, like the
+        The code below extracts some useful information from t  he state, like the
         remaining food (newFood) and Pacman position after moving (newPos).
         newScaredTimes holds the number of moves that each ghost will remain
         scared because of Pacman having eaten a power pellet.
@@ -68,13 +69,46 @@ class ReflexAgent(Agent):
         """
         # Useful information you can extract from a GameState (pacman.py)
         successorGameState = currentGameState.generatePacmanSuccessor(action)
+        print "Action: {0}".format(action)
+        
+        score = successorGameState.getScore()
+        print "Current Score: {0}".format(score)
+
         newPos = successorGameState.getPacmanPosition()
+        print "Next Position: {0}".format(newPos)
+
         newFood = successorGameState.getFood()
+        print newFood
+        posx, posy = newPos
+        isFood = newFood[posx+1][posy+1]
+        if isFood:
+          print "333333333333333333333333333333333"
+        print "Food at Position: {0}".format(isFood)
+
         newGhostStates = successorGameState.getGhostStates()
+        print "New Ghost States: {0}".format(newGhostStates)
+
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+        print "New Scared Times: {0}".format(newScaredTimes)
+
+        print ""
+
+        # Increase score only if there is a food next to it
+        if Directions.EAST == action:
+          is_food = newFood[posx+1][posy]
+          if is_food:
+            score += 5
+          else:
+            score -= 15
+        elif Directions.WEST == action:
+          is_food = newFood[posx-1][posy]
+          if is_food:
+            score += 5
+          else:
+            score -= 15
 
         "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        return score
 
 def scoreEvaluationFunction(currentGameState):
     """

@@ -24,7 +24,7 @@
                 "-p",
                 "ReflexAgent",
                 "-l",
-                "testClassic"
+                "openClassic"
             ]
         },
         {

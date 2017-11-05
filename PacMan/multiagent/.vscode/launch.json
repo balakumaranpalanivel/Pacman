@@ -22,7 +22,9 @@
             ],
             "args":[
                 "-p",
-                "ReflexAgent"
+                "ReflexAgent",
+                "-l",
+                "testClassic"
             ]
         },
         {

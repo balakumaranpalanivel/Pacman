@@ -69,43 +69,48 @@ class ReflexAgent(Agent):
         """
         # Useful information you can extract from a GameState (pacman.py)
         successorGameState = currentGameState.generatePacmanSuccessor(action)
-        print "Action: {0}".format(action)
+        # print "Action: {0}".format(action)
         
         score = successorGameState.getScore()
-        print "Current Score: {0}".format(score)
+        # print "Current Score: {0}".format(score)
 
         newPos = successorGameState.getPacmanPosition()
-        print "Next Position: {0}".format(newPos)
+        # print "Next Position: {0}".format(newPos)
 
         newFood = successorGameState.getFood()
-        print newFood
+        # print newFood
         posx, posy = newPos
         isFood = newFood[posx+1][posy+1]
-        if isFood:
-          print "333333333333333333333333333333333"
-        print "Food at Position: {0}".format(isFood)
+        # if isFood:
+        #   print "333333333333333333333333333333333"
+        # print "Food at Position: {0}".format(isFood)
 
         newGhostStates = successorGameState.getGhostStates()
-        print "New Ghost States: {0}".format(newGhostStates)
+        # print "New Ghost States: {0}".format(newGhostStates)
 
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
-        print "New Scared Times: {0}".format(newScaredTimes)
+        # print "New Scared Times: {0}".format(newScaredTimes)
 
-        print ""
+        # print ""
 
-        # Increase score only if there is a food next to it
-        if Directions.EAST == action:
-          is_food = newFood[posx+1][posy]
-          if is_food:
-            score += 5
-          else:
-            score -= 15
-        elif Directions.WEST == action:
-          is_food = newFood[posx-1][posy]
-          if is_food:
-            score += 5
-          else:
-            score -= 15
+        score = 0
+        # find the number of remaining food
+        current_food = currentGameState.getFood()
+        succesor_food = successorGameState.getFood()
+        
+        current_food_count = 0
+        for item in current_food:
+          current_food_count += item.count(True)
+        
+        succesor_food_count = 0
+        for item in succesor_food:
+          succesor_food_count += item.count(True)
+
+        # number of food reduces or remains the same
+        if succesor_food_count < current_food_count:
+          score += 1
+        elif succesor_food_count == current_food_count:
+          score += 0.5
 
         "*** YOUR CODE HERE ***"
         return score

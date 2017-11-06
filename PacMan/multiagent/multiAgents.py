@@ -349,6 +349,49 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
       Your expectimax agent (question 4)
     """
 
+    # PACMAN
+    def max_value(self, game_state, depth):
+      
+      # Terminal States return score
+      if game_state.isWin() or game_state.isLose() or depth == 0:
+        return (scoreEvaluationFunction(game_state), Directions.STOP)
+      
+      # print "self.depth: {0}".format(self.depth)
+      # game_state.dept
+
+      max_score = -999999
+      return_action = Directions.STOP
+
+      pacman_legal_actions = game_state.getLegalActions(0)
+      for action_taken in pacman_legal_actions:
+        successor_state = game_state.generateSuccessor(0, action_taken)
+        current_score = self.chance_value(successor_state, depth, 1)
+        if current_score >= max_score:
+          max_score = current_score
+          return_action  = action_taken
+
+      return (max_score, return_action)
+
+    def chance_value(self, game_state, depth, ghost_index):
+      
+      if game_state.isWin() or game_state.isLose() or depth == 0:
+        return scoreEvaluationFunction(game_state)
+
+      return_action = Directions.STOP
+      number_of_agents = game_state.getNumAgents()
+      chance_value = 0
+
+      list_legal_actions = game_state.getLegalActions(ghost_index)
+      for action in list_legal_actions:
+        successor_state = game_state.generateSuccessor(ghost_index, action)
+        if ghost_index == number_of_agents - 1:
+          value, text = self.max_value(successor_state, depth-1)
+          chance_value += value
+        else:
+          chance_value += self.chance_value(successor_state, depth, ghost_index+1)
+        
+      return chance_value/len(list_legal_actions)
+
     def getAction(self, gameState):
         """
           Returns the expectimax action using self.depth and self.evaluationFunction
@@ -357,7 +400,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
           legal moves.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        score, action = self.max_value(gameState, self.depth)
+        return action
 
 def betterEvaluationFunction(currentGameState):
     """

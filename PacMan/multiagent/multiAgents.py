@@ -196,15 +196,15 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
       Your minimax agent (question 2)
     """
-    # PACMAN
+
+    """
+    @desc: Implements the Max agent value computation
+    """
     def max_value(self, game_state, depth):
       
       # Terminal States return score
       if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
-      
-      # print "self.depth: {0}".format(self.depth)
-      # game_state.dept
 
       max_score = -999999
       return_action = Directions.STOP
@@ -220,19 +220,18 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
       return (max_score, return_action)
 
+    """
+    @desc: Implements the Min agent value computation
+    """
     def min_value(self, game_state, depth, ghost_index):
 
       if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
 
-      # print "self.depth: {0}".format(self.depth)
-
       min_score = 999999
-
       return_action = Directions.STOP
 
       number_of_agents = game_state.getNumAgents()
-
       for action_taken in game_state.getLegalActions(ghost_index):
         successor_state = game_state.generateSuccessor(ghost_index, action_taken)
         
@@ -264,9 +263,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
           gameState.getNumAgents():
             Returns the total number of agents in the game
-        """
-        "*** YOUR CODE HERE ***"
-        
+        """        
         score, action = self.max_value(gameState, self.depth)
         return action
 
@@ -275,14 +272,15 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
       Your minimax agent with alpha-beta pruning (question 3)
     """
     # PACMAN
+    """
+    @desc:  Implements the Max agent value computation
+            with alpha-beta pruning
+    """
     def max_value(self, game_state, depth, alpha, beta):
       
       # Terminal States return score
       if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
-      
-      # print "self.depth: {0}".format(self.depth)
-      # game_state.dept
 
       max_score = -999999
       return_action = Directions.STOP
@@ -302,15 +300,16 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
       return (max_score, return_action)
 
+    """
+    @desc:  Implements the Min agent value computation
+            with alpha-beta pruning
+    """
     def min_value(self, game_state, depth, ghost_index, alpha, beta):
 
       if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
 
-      # print "self.depth: {0}".format(self.depth)
-
       min_score = 999999
-
       return_action = Directions.STOP
 
       number_of_agents = game_state.getNumAgents()
@@ -338,7 +337,6 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
           Returns the minimax action using self.depth and self.evaluationFunction
         """
-        "*** YOUR CODE HERE ***"
         alpha = -(float("inf"))
         beta = float("inf")
         score, action = self.max_value(gameState, self.depth, alpha, beta)
@@ -350,14 +348,14 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     """
 
     # PACMAN
+    """
+    @desc: Implements the Max agent value computation
+    """
     def max_value(self, game_state, depth):
       
       # Terminal States return score
       if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
-      
-      # print "self.depth: {0}".format(self.depth)
-      # game_state.dept
 
       max_score = -999999
       return_action = Directions.STOP
@@ -372,6 +370,9 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
       return (max_score, return_action)
 
+    """
+    @desc: Implements the Chance agent value computation
+    """
     def chance_value(self, game_state, depth, ghost_index):
       
       if game_state.isWin() or game_state.isLose() or depth == 0:
@@ -399,7 +400,6 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
           All ghosts should be modeled as choosing uniformly at random from their
           legal moves.
         """
-        "*** YOUR CODE HERE ***"
         score, action = self.max_value(gameState, self.depth)
         return action
 

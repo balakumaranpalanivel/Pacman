@@ -197,6 +197,53 @@ class MinimaxAgent(MultiAgentSearchAgent):
       Your minimax agent (question 2)
     """
 
+    def minimax_search(self, game_state):
+      pass
+
+    # PACMAN
+    def max_value(self, game_state):
+      
+      # Terminal States return score
+      if game_state.isWin() or game_state.isLose():
+        return scoreEvaluationFunction(game_state)
+
+      max_score = 10000
+      return_action = Directions.STOP
+
+      pacman_legal_actions = game_state.getLegalActions(0)
+      for action_taken in pacman_legal_actions:
+        successor_state = game_state.generateSuccessor(0, action_taken)
+        current_score = self.min_value(successor_state)
+        if current_score >= max_score:
+          max_score = current_score
+          return_action  = action_taken
+
+        #max_score = max( max_score, self.min_value(successor_state))
+
+      return (max_score, return_action)
+
+    def min_value(self, game_state):
+
+      if game_state.isWin() or game_state.isLose():
+        return scoreEvaluationFunction(game_state)
+
+      min_score = -10000
+      return_action = Directions.STOP
+
+      number_of_agents = game_state.getNumAgents()
+
+      for agent_ghost in range(1, number_of_agents):
+        for action_taken in game_state.getLegalActions(agent_ghost):
+          successor_state = game_state.generateSuccessor(agent_ghost, action_taken)
+          current_score = self.max_value(successor_state)
+          if current_score <= min_score:
+            min_score = current_score
+            return_action = action_taken
+
+          #min_score = min( min_score, self.max_value(successor_state))
+
+      return (min_score, return_action)
+
     def getAction(self, gameState):
         """
           Returns the minimax action from the current gameState using self.depth
@@ -215,7 +262,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
             Returns the total number of agents in the game
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        
+        score, action = self.max_value(gameState)
+        return action
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """

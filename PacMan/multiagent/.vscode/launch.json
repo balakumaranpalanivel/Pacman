@@ -22,7 +22,7 @@
             ],
             "args":[
                 "-t",
-                "test_cases/q2/7-1b-check-depth-one-ghost"
+                "test_cases/q3/6-tied-root"
             ]
         },
         {

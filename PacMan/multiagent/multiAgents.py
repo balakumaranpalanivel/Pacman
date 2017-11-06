@@ -196,16 +196,15 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
       Your minimax agent (question 2)
     """
-
-    def minimax_search(self, game_state):
-      pass
-
     # PACMAN
-    def max_value(self, game_state):
+    def max_value(self, game_state, depth):
       
       # Terminal States return score
-      if game_state.isWin() or game_state.isLose():
+      if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
+      
+      # print "self.depth: {0}".format(self.depth)
+      # game_state.dept
 
       max_score = -999999
       return_action = Directions.STOP
@@ -213,7 +212,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
       pacman_legal_actions = game_state.getLegalActions(0)
       for action_taken in pacman_legal_actions:
         successor_state = game_state.generateSuccessor(0, action_taken)
-        return_value = self.min_value(successor_state)
+        return_value = self.min_value(successor_state, depth, 1)
         current_score, action_text = return_value
         if current_score >= max_score:
           max_score = current_score
@@ -223,24 +222,31 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
       return (max_score, return_action)
 
-    def min_value(self, game_state):
+    def min_value(self, game_state, depth, ghost_index):
 
-      if game_state.isWin() or game_state.isLose():
+      if game_state.isWin() or game_state.isLose() or depth == 0:
         return (scoreEvaluationFunction(game_state), Directions.STOP)
 
+      # print "self.depth: {0}".format(self.depth)
+
       min_score = 999999
+
       return_action = Directions.STOP
 
       number_of_agents = game_state.getNumAgents()
 
-      for agent_ghost in range(1, number_of_agents):
-        for action_taken in game_state.getLegalActions(agent_ghost):
-          successor_state = game_state.generateSuccessor(agent_ghost, action_taken)
-          return_value = self.max_value(successor_state)
-          current_score, action_text = return_value
-          if current_score <= min_score:
-            min_score = current_score
-            return_action = action_taken
+      for action_taken in game_state.getLegalActions(ghost_index):
+        successor_state = game_state.generateSuccessor(ghost_index, action_taken)
+        
+        if ghost_index == number_of_agents-1:
+          return_value = self.max_value(successor_state, depth-1)
+        else:
+          return_value = self.min_value(successor_state, depth, ghost_index+1)
+        current_score, action_text = return_value
+
+        if current_score <= min_score:
+          min_score = current_score
+          return_action = action_taken
 
           #min_score = min( min_score, self.max_value(successor_state))
 
@@ -265,7 +271,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         
-        score, action = self.max_value(gameState)
+        score, action = self.max_value(gameState, self.depth)
         return action
 
 class AlphaBetaAgent(MultiAgentSearchAgent):

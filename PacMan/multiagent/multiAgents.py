@@ -43,8 +43,8 @@ class ReflexAgent(Agent):
 
         # Choose one of the best actions
         scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
-        print "Scores: {0}".format(scores)
-        print "Moves: {0}".format(legalMoves)
+        # print "Scores: {0}".format(scores)
+        # print "Moves: {0}".format(legalMoves)
 
         bestScore = max(scores)
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
@@ -205,15 +205,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
       
       # Terminal States return score
       if game_state.isWin() or game_state.isLose():
-        return scoreEvaluationFunction(game_state)
+        return (scoreEvaluationFunction(game_state), Directions.STOP)
 
-      max_score = 10000
+      max_score = -999999
       return_action = Directions.STOP
 
       pacman_legal_actions = game_state.getLegalActions(0)
       for action_taken in pacman_legal_actions:
         successor_state = game_state.generateSuccessor(0, action_taken)
-        current_score = self.min_value(successor_state)
+        return_value = self.min_value(successor_state)
+        current_score, action_text = return_value
         if current_score >= max_score:
           max_score = current_score
           return_action  = action_taken
@@ -225,9 +226,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
     def min_value(self, game_state):
 
       if game_state.isWin() or game_state.isLose():
-        return scoreEvaluationFunction(game_state)
+        return (scoreEvaluationFunction(game_state), Directions.STOP)
 
-      min_score = -10000
+      min_score = 999999
       return_action = Directions.STOP
 
       number_of_agents = game_state.getNumAgents()
@@ -235,7 +236,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
       for agent_ghost in range(1, number_of_agents):
         for action_taken in game_state.getLegalActions(agent_ghost):
           successor_state = game_state.generateSuccessor(agent_ghost, action_taken)
-          current_score = self.max_value(successor_state)
+          return_value = self.max_value(successor_state)
+          current_score, action_text = return_value
           if current_score <= min_score:
             min_score = current_score
             return_action = action_taken

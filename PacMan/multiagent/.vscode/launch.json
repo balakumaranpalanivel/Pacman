@@ -21,10 +21,8 @@
                 "RedirectOutput"
             ],
             "args":[
-                "-p",
-                "ReflexAgent",
-                "-l",
-                "openClassic"
+                "-t",
+                "test_cases/q2/1-1-minmax"
             ]
         },
         {

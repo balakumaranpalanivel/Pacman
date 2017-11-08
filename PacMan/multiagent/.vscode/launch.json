@@ -21,8 +21,8 @@
                 "RedirectOutput"
             ],
             "args":[
-                "-p",
-                "ReflexAgent"
+                "-t",
+                "test_cases/q4/6-1a-check-depth-one-ghost"
             ]
         },
         {

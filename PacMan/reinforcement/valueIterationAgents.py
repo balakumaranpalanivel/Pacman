@@ -42,7 +42,16 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.discount = discount
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
+        states = self.mdp.getStates()
+        
+        for state in states:
+            self.values[state] = 0
 
+        print "States: {0}".format(states)
+
+        print "Values: {0}".format(self.values)
+        print "Discount: {0}".format(self.discount)
+        
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
 

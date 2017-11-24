@@ -20,8 +20,18 @@
 # value iteration.
 
 def question2():
+    """
+        MY_EXPLANATION
+        Answer: Decreasing the noise value to 0.01
+
+        Increasing or decreasing the discount will not have effect on the overall
+        policy of leading the agent towards "west" in the initial stages. Because
+        the discount value has more effect on the intial stages owing to 
+        (gamma*discount) 
+        Hence I decided to reduce the noise value.
+    """
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0.01
     return answerDiscount, answerNoise
 
 def question3a():

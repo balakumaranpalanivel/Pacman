@@ -42,19 +42,53 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.discount = discount
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
+        self.policy = util.Counter()
         states = self.mdp.getStates()
         
-        for state in states:
-            self.values[state] = 0
+        # for state in states:
+        #     self.values[state] = 0
 
-        print "States: {0}".format(states)
+        # http://artint.info/html/ArtInt_227.html
+        #print "States: {0}".format(states)
+        #print "Values: {0}".format(self.values)
+        #print "Discount: {0}".format(self.discount)
 
-        print "Values: {0}".format(self.values)
-        print "Discount: {0}".format(self.discount)
-        
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+        # New value function list
+        new_values = util.Counter()
+        new_policy = util.Counter()
+        for i in xrange(self.iterations):
+            for state in states:
+                if self.mdp.isTerminal(state):
+                    new_values[state] = 0
+                    new_policy[state] = None
+                else:
+                    q_value_list = []
+                    feasible_actions = self.mdp.getPossibleActions(state)
+                    for current_action in feasible_actions:
+                        current_q_value = self.computeQValueFromValues(state, current_action)
+                        q_value_list.append(current_q_value)   
+                    new_values[state] = max(q_value_list)
+                    new_policy[state] = feasible_actions[q_value_list.index(new_values[state])]
+            self.values = new_values.copy()
 
+        for state in states:
+            if self.mdp.isTerminal(state):
+                new_policy[state] = None
+            else:
+                q_value_list = []
+                feasible_actions = self.mdp.getPossibleActions(state)
+                for current_action in feasible_actions:
+                    current_q_value = self.computeQValueFromValues(state,
+                    current_action)
+                    q_value_list.append(current_q_value)   
+                new_values[state] = max(q_value_list)
+                new_policy[state] = feasible_actions[q_value_list.index(new_values[state])]
+        self.policy = new_policy.copy()
+
+        print "Values: {0}".format(self.values)
+        print "Policy: {0}".format(self.policy)
 
     def getValue(self, state):
         """
@@ -62,14 +96,22 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         return self.values[state]
 
-
     def computeQValueFromValues(self, state, action):
         """
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        q_value = 0
+        transition_funcion = self.mdp.getTransitionStatesAndProbs(state, action)
+        for transition in transition_funcion:
+            next_state = transition[0]
+            probablity = transition[1]
+            reward = self.mdp.getReward(state, action, next_state)
+            discount = self.discount
+            previous_value = self.values[next_state]
+            q_value += probablity * (reward + (discount*previous_value))
+        return q_value
 
     def computeActionFromValues(self, state):
         """
@@ -81,7 +123,29 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.policy[state]
+
+        if self.mdp.isTerminal(state):
+            return None
+        else:
+            action_dict = util.Counter()
+            bestval = -99999999999
+            bestaction = 0
+            all_actions = self.mdp.getPossibleActions(state)
+            for action in all_actions:
+
+                transitions = self.mdp.getTransitionStatesAndProbs(state, action)
+                value = 0
+                for transition in transitions:
+                    value += transition[1]*(self.mdp.getReward(state, action, transition[0]) + self.discount * self.values[transition[0]])
+                if value > bestval:
+                    bestaction = action
+                    bestval = value
+            print ("-------")
+            print ("Policy: {0}".format(self.policy[state]))
+            print ("Best Action: {0}".format(bestaction))
+            print ("-------")
+            return bestaction
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)

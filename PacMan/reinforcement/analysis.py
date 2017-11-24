@@ -35,37 +35,69 @@ def question2():
     return answerDiscount, answerNoise
 
 def question3a():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    """
+        What Have I done ?
+        I have give a negative living reward so that the agent will quickly try
+        to find a exit state
+        I have kept a less discount value so that it will not increase the value
+        for a given state and encourage living
+        Noise is kept to zero so that unexpected movements are not taken. This is
+        essential to make sure that the agent doesnt end up in the cliff while
+        taking the risky route
+    """
+    answerDiscount = 0.5 
+    answerNoise = 0
+    answerLivingReward = -1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3b():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    """
+        What Have I done ?
+        Having the same situation as question (3a) for discount and living reward
+        Adding Noise increases the chances of ending on the wrong states which
+        makes the agent chose a longer path (safer path) but go for the closest
+        exit state
+    """
+    answerDiscount = 0.5
+    answerNoise = 0.1
+    answerLivingReward = -1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    """
+        What Have I done?
+        Having the same situaion as question (3a) for discout and noise
+        But encouraging the agent to live by awarding a positive living reward
+    """
+    answerDiscount = 0.5
+    answerNoise = 0
+    answerLivingReward = 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    """
+        What Have I done?
+        Having the same situation as question (3b) for discount and noise
+        But encouraging the agent to live by awarding a positive living reward
+    """
+    answerDiscount = 0.5 
+    answerNoise = 0.1
+    answerLivingReward = 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    """
+        What Have I done?
+        Awarding a extremely high living reward to encourage the agent to never
+        exit the board
+    """
+    answerDiscount = 0.5
+    answerNoise = 0.0
+    answerLivingReward = 1000
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 

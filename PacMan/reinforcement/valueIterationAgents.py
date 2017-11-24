@@ -87,8 +87,8 @@ class ValueIterationAgent(ValueEstimationAgent):
                 new_policy[state] = feasible_actions[q_value_list.index(new_values[state])]
         self.policy = new_policy.copy()
 
-        print "Values: {0}".format(self.values)
-        print "Policy: {0}".format(self.policy)
+        #print "Values: {0}".format(self.values)
+        #print "Policy: {0}".format(self.policy)
 
     def getValue(self, state):
         """

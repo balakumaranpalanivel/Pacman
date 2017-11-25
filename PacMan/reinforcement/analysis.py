@@ -103,7 +103,11 @@ def question3e():
 
 def question6():
     """
-        
+        What Have I done?
+        The agent never finds the optimal policy within the specified number of
+        iterations because the total number of stages available is quite large
+        compared to iterations. Hence for any amount of epsilon and learning
+        rate optimal policy is never reached
     """
     answerEpsilon = None
     answerLearningRate = None

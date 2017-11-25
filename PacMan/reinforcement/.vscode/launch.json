@@ -21,7 +21,7 @@
             ],
             "args":[
                 "-t",
-                "test_cases/q1/1-tinygrid"
+                "test_cases/q4/1-tinygrid"
             ]
         },
         {
